@@ -1,3 +1,6 @@
+WFUrbanAdaptation
+=================
+
 WFUrbanAdaptation is a research compendium that brings together the data
 and analyses associated with Homola et al. (in review). R scripts are
 provided in analysis/, human-readable data in extData/, and R-readable
@@ -13,22 +16,21 @@ version 3.5.1 in Windows 10
     library(devtools)
     install_github("jaredhomola/WFUrbanAdaptation")
 
-Scripts in /analysis
---------------------
+### Scripts in /analysis
 
-1.  Build RDA file (buildRDA.R)
-2.  Install required packages (installPackages.R)
-3.  PCA of environmental variables (envPCA.R)
-4.  Genetic diversity measures (genDiversity.R)
-5.  Genetic diversity empirical cumulative density function
-    (diversityECDF.R)
-6.  Genetic differentiation (neiGst)
-7.  Multivariate analyses including DAPCs and PCoAs
-    (multivariateAnalyses.R)
-8.  Outlier analysis using percentile-based approach across replicates
-    (outlierAnalysis)
-9.  Genotype-environment association analysis using logistic regression
-    (logisticRegressionGEA.R)
+1.  buildRDA.R: Build RDA file
+2.  installPackages.R: Install required packages
+3.  envPCA.R: PCA of environmental variables
+4.  genDiversity.R: Genetic diversity measures
+5.  diversityECDF.R: Genetic diversity empirical cumulative density
+    function
+6.  neiGst)Genetic differentiation
+7.  multivariateAnalyses.R: Multivariate analyses including DAPCs and
+    PCoAs
+8.  outlierAnalysis)Outlier analysis using percentile-based approach
+    across replicates
+9.  logisticRegressionGEA.R: Genotype-environment association analysis
+    using logistic regression
 
 ### Contact
 
