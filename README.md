@@ -24,10 +24,10 @@ version 3.5.1 in Windows 10
 4.  genDiversity.R: Genetic diversity measures
 5.  diversityECDF.R: Genetic diversity empirical cumulative density
     function
-6.  neiGst)Genetic differentiation
+6.  neiGst.R: Genetic differentiation
 7.  multivariateAnalyses.R: Multivariate analyses including DAPCs and
     PCoAs
-8.  outlierAnalysis)Outlier analysis using percentile-based approach
+8.  outlierAnalysis.R: Outlier analysis using percentile-based approach
     across replicates
 9.  logisticRegressionGEA.R: Genotype-environment association analysis
     using logistic regression
