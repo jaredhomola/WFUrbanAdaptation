@@ -28,7 +28,7 @@ version 3.5.1 in Windows 10
 7.  multivariateAnalyses.R: Multivariate analyses including DAPCs and
     PCoAs
 8.  outlierAnalysis.R: Outlier analysis using percentile-based approach
-    across replicates
+    across replicates. Also include allele and genotype frequency plots.
 9.  logisticRegressionGEA.R: Genotype-environment association analysis
     using logistic regression
 
