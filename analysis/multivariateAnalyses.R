@@ -11,6 +11,7 @@
 #### Load required libraries
 library(tidyverse)
 library(vcfR)
+library(adegenet)
 library(WFUrbanAdaptation)
 data(WFUrbanAdaptation)
 
@@ -62,4 +63,5 @@ X <- tab(outliers.dat, freq=TRUE, NA.method="mean")
 pcoa.ol <- dudi.pco(dist(X), scannf=FALSE, nf=3)
 col <- c("red", "blue")
 s.class(pcoa.ol$li, pop(outliers.dat), xax=1, yax=2, col=transp(col, 0.6),
-        axesell=FALSE, cellipse = 0, cstar=0, cpoint=3, grid=FALSE)
+        axesell=FALSE, cellipse = 0, cstar=0, cpoint=3, pch=16:17, grid=FALSE)
+

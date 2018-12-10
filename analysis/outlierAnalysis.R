@@ -8,6 +8,7 @@
 library(tidyverse)
 library(vcfR)
 library(lme4)
+library(stringr)
 library(WFUrbanAdaptation)
 data(WFUrbanAdaptation)
 
@@ -130,7 +131,7 @@ ggplot(fst.df.percent, aes(rank, mean.Percentile.Gst, color=factor(outlier))) +
         panel.grid.minor = element_blank(), legend.position="none", axis.line = element_line(colour = "black"), legend.title=element_blank())
 
 
-##### Generate genotype frequency plots
+########## Plotting based on genotype frequency
 ## Create tibble
 drop.cols <- c("REF", "ALT", "POS", "NS", "AF", "gt_GT", "recode.GT")
 df.plot <- df %>%
@@ -147,13 +148,76 @@ df.plot2 <- within(df.plot,
                                      ))))
 
 ## Plots created locus-by-locus.
-locus <- "71089_22" ## Specify locus of interest
+locus <- "81761_36" ## Specify locus of interest
 df.plot2 %>%
   filter(ID == locus) %>%
   ggplot(aes(x = envType, y = freq, fill = gt_GT_alleles)) +
+  scale_fill_brewer(palette="Spectral") +
   geom_boxplot() +
+  annotate("text", x = 1.0, y = 0.0, label = locus, fontface = 2, size = 7) +
   ylim(0.0,1.0) +
   ylab("Genotype frequency") + xlab("") +
   theme_bw() +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title=element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), text = element_text(size = 22))
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        text = element_text(size = 22), legend.text=element_text(size=26), legend.key.size = unit(.4, "in"))
+
+########## Plotting based on allele frequency
+##### Set up locus tibble
+all.data <- vcfR2tidy(allLoci,
+                      single_frame = TRUE,
+                      format_fields = c("GT"))
+
+df.temp <- all.data$dat %>%
+  separate(Indiv, c("Site1", "Site2", "Ind")) %>%
+  unite("Site", c("Site1", "Site2"))
+
+temp <- recode_factor(df.temp$Site,
+                      "BAN_7" = "Urban",
+                      "ORO_1" = "Rural",
+                      "BRU_3" = "Urban",
+                      "BRU_2" = "Rural",
+                      "YAR_4" = "Urban",
+                      "FRE_3" = "Rural",
+                      "WEL_4" = "Urban",
+                      "TAT_1" = "Rural")
+
+temp2 <- recode_factor(df.temp$Site,
+                       "BAN_7" = "1",
+                       "ORO_1" = "1",
+                       "BRU_3" = "2",
+                       "BRU_2" = "2",
+                       "YAR_4" = "3",
+                       "FRE_3" = "3",
+                       "WEL_4" = "4",
+                       "TAT_1" = "4")
+
+drop.cols <- c("CHROM", "POS", "QUAL", "FILTER", "NS", "AF", "Site", "Ind", "gt_GT")
+
+df <- df.temp %>%
+  mutate(envType = temp, rep = temp2) %>%
+  select(-one_of(drop.cols)) %>%
+  group_by(ID, REF, ALT, envType, rep, gt_GT_alleles) %>%
+  summarize(gtAlleles.n = n()) %>%
+  filter(!gt_GT_alleles %in% ".") %>%  ## Filter non-collected genotyoes
+  mutate(REF.n = (str_count(gt_GT_alleles, REF))*gtAlleles.n) %>%
+  group_by(ID, envType, rep) %>%
+  summarize(REF.freq = sum(REF.n) / (sum(gtAlleles.n)*2)) %>%
+  arrange(desc(envType))
+
+df$envType <- with(df, relevel(envType, "Rural"))
+
+#### Plots created locus-by-locus.
+locus <- "3466_41" ## Specify locus of interest
+df %>%
+  filter(ID == locus) %>%
+  ggplot(aes(x = envType, y = REF.freq, fill = envType)) +
+  scale_fill_brewer(palette="Spectral") +
+  geom_boxplot() +
+  annotate("text", x = 1.0, y = 0.0, label = locus, fontface = 2, size = 7) +
+  ylim(0.0,1.0) +
+  ylab("Reference allele frequency") + xlab("") +
+  theme_bw() +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), legend.title=element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        text = element_text(size = 26), legend.position="none")

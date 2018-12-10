@@ -26,14 +26,14 @@ summary(pca)
 ## Plot PCA
 pca.df<-data.frame(pca$x, envType = envData.log$envType)
 
-pca.plot <- ggplot(pca.df, aes(x = PC1, y = PC2, col = envType)) +
-  geom_point(size = 8) +
-  labs(color = "Site type") +
+pca.plot <- ggplot(pca.df, aes(x = PC1, y = PC2, group = envType)) +
+  geom_point(size = 8, aes(shape = envType)) +
+  labs(shape = "Site type") +
   xlab("PC1 (88.89%)") +
   ylab("PC2 (7.08%)") +
   scale_color_manual(values = c("#0033cc", "#ff0000")) +
   theme(
-    text = element_text(size = 20),
+    text = element_text(size = 22),
     legend.position = c(0.85, 0.15),
     legend.key = element_blank(),
     legend.background = element_rect(
@@ -47,7 +47,3 @@ pca.plot <- ggplot(pca.df, aes(x = PC1, y = PC2, col = envType)) +
     panel.background = element_blank(),
     axis.line = element_line(colour = "black")
   )
-
-## Save in compendium output folder
-ggsave("./output/Figure_2.pdf", plot = pca.plot,
-       width = 8, height = 8, units = "in", dpi = 300)

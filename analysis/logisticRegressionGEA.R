@@ -93,3 +93,4 @@ pSig <- subset(t, p < 0.05)
 alpha <- 0.05
 qvals <- qvalue(p = p.list)$qvalues
 outliers <- which(qvals<alpha) ## No loci significant at q = 0.05
+

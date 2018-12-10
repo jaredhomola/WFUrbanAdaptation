@@ -5,7 +5,7 @@
 
 list.of.packages <- c("vegan", "tidyverse",
                       "adegenet", "vcfR",
-                      "lme4")
+                      "lme4", "stringr")
 
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 
